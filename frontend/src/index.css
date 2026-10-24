@@ -1,0 +1,358 @@
+@import 'tailwindcss';
+
+/* Theme is driven by a `dark` class on <html>, set by the inline script in
+   index.html and managed afterwards by ThemeProvider. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --breakpoint-xs: 30rem;
+
+  /* GearZoneLK blue. Only brand-500/600/700 are used for interactive surfaces;
+     the lighter steps are tints for selected states and the darker steps are
+     reserved for active/pressed. */
+  --color-brand-50: oklch(0.97 0.016 262);
+  --color-brand-100: oklch(0.935 0.034 262);
+  --color-brand-200: oklch(0.88 0.06 262);
+  --color-brand-300: oklch(0.79 0.105 262);
+  --color-brand-400: oklch(0.68 0.165 262);
+  --color-brand-500: oklch(0.6 0.198 262);
+  --color-brand-600: oklch(0.53 0.212 262);
+  --color-brand-700: oklch(0.465 0.19 262);
+  --color-brand-800: oklch(0.4 0.155 262);
+  --color-brand-900: oklch(0.33 0.115 262);
+
+  /* Semantic surfaces and text. Every one of these is re-bound in `.dark`
+     below, so utilities such as `bg-surface` and `text-muted` are
+     theme-aware without a single `dark:` variant at the call site. */
+  --color-canvas: oklch(1 0 0);
+  --color-subtle: oklch(0.975 0.004 262);
+  --color-surface: oklch(1 0 0);
+  --color-elevated: oklch(1 0 0);
+  --color-line: oklch(0.92 0.006 262);
+  --color-line-strong: oklch(0.865 0.008 262);
+  --color-ink: oklch(0.205 0.014 262);
+  --color-muted: oklch(0.52 0.014 262);
+  --color-faint: oklch(0.64 0.012 262);
+
+  /* Accent aliases keep the blue readable in both themes: `accent` is a fill
+     that carries white text, `link` is accent-coloured text on the canvas. */
+  --color-accent: oklch(0.53 0.212 262);
+  --color-accent-hover: oklch(0.465 0.19 262);
+  --color-accent-soft: oklch(0.955 0.025 262);
+  --color-link: oklch(0.465 0.19 262);
+
+  /* Dark framing bands (announcement bar, footer) that stay dark in both
+     themes so the page is bracketed in black, white and blue. */
+  --color-strip: oklch(0.19 0.014 262);
+  --color-strip-raised: oklch(0.25 0.016 262);
+  --color-strip-line: oklch(0.3 0.016 262);
+  --color-on-strip: oklch(0.97 0.004 262);
+  --color-on-strip-muted: oklch(0.72 0.013 262);
+
+  --color-success: oklch(0.55 0.14 155);
+  --color-success-soft: oklch(0.955 0.04 155);
+  --color-warning: oklch(0.62 0.15 70);
+  --color-warning-soft: oklch(0.96 0.05 80);
+  --color-danger: oklch(0.55 0.2 22);
+  --color-danger-soft: oklch(0.955 0.03 22);
+
+  /* Three radii only: controls, cards, large panels. */
+  --radius-control: 0.625rem;
+  --radius-card: 0.875rem;
+  --radius-panel: 1.25rem;
+
+  --shadow-card: 0 1px 2px rgb(16 18 27 / 0.04), 0 8px 24px -12px rgb(16 18 27 / 0.1);
+  --shadow-lift: 0 2px 4px rgb(16 18 27 / 0.05), 0 18px 40px -18px rgb(16 18 27 / 0.22);
+  --shadow-panel: 0 24px 60px -24px rgb(16 18 27 / 0.28);
+
+  --animate-fade-in: fade-in 0.3s ease-out both;
+  --animate-fade-out: fade-in 0.2s ease-in reverse both;
+  --animate-fade-up: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-scale-in: scale-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-slide-down: slide-down 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  /* Drawer enter/exit pairs. The `reverse` variants let a panel animate out
+     before unmounting without a second set of keyframes. */
+  --animate-in-right: in-right 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-out-right: in-right 0.22s cubic-bezier(0.4, 0, 1, 1) reverse both;
+  --animate-in-left: in-left 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-out-left: in-left 0.22s cubic-bezier(0.4, 0, 1, 1) reverse both;
+  --animate-in-bottom: in-bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-out-bottom: in-bottom 0.22s cubic-bezier(0.4, 0, 1, 1) reverse both;
+
+  --animate-toast-in: toast-in 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-toast-out: toast-in 0.2s ease-in reverse both;
+  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
+  --animate-heart-pop: heart-pop 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes in-right {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: none;
+    }
+  }
+  @keyframes in-left {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: none;
+    }
+  }
+  @keyframes in-bottom {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: none;
+    }
+  }
+  @keyframes slide-down {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes shimmer {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.45;
+    }
+  }
+  @keyframes heart-pop {
+    0% {
+      transform: scale(1);
+    }
+    45% {
+      transform: scale(1.32);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
+
+.dark {
+  --color-canvas: oklch(0.172 0.011 262);
+  --color-subtle: oklch(0.205 0.012 262);
+  --color-surface: oklch(0.215 0.013 262);
+  --color-elevated: oklch(0.25 0.014 262);
+  --color-line: oklch(0.29 0.014 262);
+  --color-line-strong: oklch(0.36 0.016 262);
+  --color-ink: oklch(0.97 0.004 262);
+  --color-muted: oklch(0.7 0.013 262);
+  --color-faint: oklch(0.58 0.013 262);
+
+  --color-accent: oklch(0.56 0.212 262);
+  --color-accent-hover: oklch(0.62 0.2 262);
+  --color-accent-soft: oklch(0.28 0.06 262);
+  --color-link: oklch(0.79 0.105 262);
+
+  --color-strip: oklch(0.135 0.01 262);
+  --color-strip-raised: oklch(0.19 0.012 262);
+  --color-strip-line: oklch(0.25 0.014 262);
+
+  --color-success: oklch(0.72 0.15 155);
+  --color-success-soft: oklch(0.29 0.06 155);
+  --color-warning: oklch(0.78 0.15 80);
+  --color-warning-soft: oklch(0.3 0.06 80);
+  --color-danger: oklch(0.68 0.19 22);
+  --color-danger-soft: oklch(0.3 0.08 22);
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -12px rgb(0 0 0 / 0.5);
+  --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.35), 0 18px 40px -18px rgb(0 0 0 / 0.65);
+  --shadow-panel: 0 24px 60px -24px rgb(0 0 0 / 0.7);
+}
+
+/* Values that back custom utilities rather than Tailwind's token namespaces. */
+:root {
+  --grid-dot: oklch(0.86 0.02 262);
+  --product-plate: oklch(0.975 0.004 262);
+}
+
+.dark {
+  --grid-dot: oklch(0.32 0.02 262);
+  --product-plate: oklch(0.24 0.012 262);
+}
+
+@layer base {
+  /* Tailwind v4 defaults borders to currentColor; restore a token-driven
+     default so `border` alone renders the correct hairline in both themes. */
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-line);
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+    letter-spacing: -0.02em;
+  }
+
+  /* Prices, counts and quantities should align in columns. */
+  :where(h1, h2, h3, h4, th, td) {
+    font-variant-numeric: tabular-nums;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-200);
+    color: var(--color-brand-900);
+  }
+
+  .dark ::selection {
+    background-color: var(--color-brand-800);
+    color: oklch(1 0 0);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+  }
+
+  /* Text fields show focus through their accent border and ring instead. */
+  :is(input:not([type='checkbox'], [type='radio']), textarea, select):focus-visible {
+    outline: none;
+  }
+
+  /* Applied briefly by ThemeProvider so a theme switch cross-fades colours
+     instead of snapping. */
+  .theme-transition,
+  .theme-transition *,
+  .theme-transition *::before,
+  .theme-transition *::after {
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      color 0.3s ease,
+      fill 0.3s ease !important;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-faint);
+  }
+
+  /* Number inputs are used for quantity; hide the native spinners. */
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* The dot grid that sits behind product imagery. GearZoneLK's signature
+   "technical drawing" cue, used in the hero, category and setup sections. */
+@utility blueprint-grid {
+  background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: -11px -11px;
+}
+
+/* Neutral plate behind a product photo so cut-outs and photos both sit well. */
+@utility product-plate {
+  background-color: var(--product-plate);
+}
+
+/* Uppercase metadata label: category names, spec keys, section eyebrows. */
+@utility micro-label {
+  font-size: 0.6875rem;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Horizontal scroll rails (trending, related products) with snap points. */
+@utility scroll-rail {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  > * {
+    scroll-snap-align: start;
+    flex: none;
+  }
+}

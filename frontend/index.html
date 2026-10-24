@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d1015" media="(prefers-color-scheme: dark)" />
+    <title>GearZoneLK — Everyday Tech. Better Gear.</title>
+    <meta
+      name="description"
+      content="GearZoneLK sells keyboards, mice, desk mats, cables, hubs, audio and phone accessories with islandwide delivery across Sri Lanka."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // Applied before first paint so the correct theme is painted immediately.
+      // Kept in sync with the resolver in src/context/theme-context.js.
+      ;(() => {
+        try {
+          const stored = localStorage.getItem('gearzonelk.theme')
+          const preference = stored === 'light' || stored === 'dark' ? stored : null
+          const resolved =
+            preference ??
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+          document.documentElement.classList.toggle('dark', resolved === 'dark')
+          document.documentElement.style.colorScheme = resolved
+        } catch {
+          /* private mode: fall back to the light theme */
+        }
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
